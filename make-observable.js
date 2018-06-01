@@ -59,9 +59,8 @@ function removeEventListener(definedEventNames, registeredEventHandler, name, fu
  * @method DomLikeObservable#dispatchEvent
  * @param {string} name the event which should be triggered
  * @param {Object?} obj the event object which should be called on all registert listener,
- * if non is set then this function creates an new object, this function adds a name and
- * `timestamp` and `eventName` attribute if not present. The `timestamp` is set with `Date.now()`
- * if not present before and `eventName` is set with the given event name.
+ * if non is set then this function creates an new object, it also adds the eventname with
+ * the name and a timestamp (if not present) with the current timestamp
  * @returns {boolean} wether the event was dispatched or not
  */
 function dispatchEvent(definedEventNames, registeredEventHandler, name, obj) {
@@ -82,10 +81,11 @@ function dispatchEvent(definedEventNames, registeredEventHandler, name, obj) {
     if (!('timestamp' in obj))
         obj.timestamp = ts;
 
-    obj.eventName = name;
+    obj.eventname = name;
 
-    for (let i = 0; i < registeredEventHandler[name].length; i++)
-        registeredEventHandler[name][i](obj);
+    const regEveHandler = registeredEventHandler[name];
+    for (let i = 0; i < regEveHandler.length; i++)
+        regEveHandler[i](obj);
 
     return true;
 }
