@@ -94,37 +94,46 @@ function dispatchEvent(definedEventNames, registeredEventHandler, name, obj) {
  * This function transforms an Object into an {@link DomLikeObservable}.
  * 
  * ```javascript
- * // SomeClass does not contains addEventListener etc.
+ * // SomeClassA does not contains addEventListener etc.
+ * 
+ * const makeDomLikeObservable = require('dom-like-observable');
+ * 
  * let obj = new SomeClassA();
- * makeDomLikeObservable(obj,['firstEvent','secondEvent']);
+ * makeDomLikeObservable(obj, ['firstEvent', 'secondEvent']);
  * 
- * obj.addEventListener('firstEvent', () => console.log)
+ * obj.addEventListener('firstEvent', console.log)
  * 
- * let newObj = makeDomLikeObservable(,['another-event']);
+ * let newObj = makeDomLikeObservable(, ['another-event']);
  * //....
  * ```
  * 
  * ```javascript
  * // usage: you are defining some class and want this class to be able to dispatch events and provide functionality so other functions can be registert as eventlistener on this class
  * 
- * function SomeClassB(){
- *  makeDomLikeObservable(this, ['someEvent', 'someOtherEvent']);
+ * const makeDomLikeObservable = require('dom-like-observable');
  * 
- *  // ... other initlizing code
+ * function SomeClassB() {
+ *     makeDomLikeObservable(this, ['someEvent', 'someOtherEvent']);
+ * 
+ *     // ... other initlizing code
  * 
  * }
  * 
- * SomeClassB.prototype.eventDispatchingFunction = function eventDispatchingFunction(){
- *  this.dispatchEvent('someEvent', {
- *   someAttr: 'eventAttr'
- *  })
+ * SomeClassB.prototype.eventDispatchingFunction = function eventDispatchingFunction() {
+ *     this.dispatchEvent('someEvent', {
+ *         someAttr: 'eventAttr'
+ *     })
  * }
  * 
  * // example usage
  * 
  * let obj = new SomeClassB();
  * 
- * obj.addEventListener('someEvent',event => console.log);
+ * obj.addEventListener('someEvent', console.log);
+ * 
+ * obj.eventDispatchingFunction();
+ * 
+ * obj.removeEventListener('someEvent', console.log);
  * 
  * obj.eventDispatchingFunction();
  * ``` 
