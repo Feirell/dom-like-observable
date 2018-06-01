@@ -43,19 +43,16 @@ function removeEventListener(definedEventNames, registeredEventHandler, name, fu
     if (!definedEventNames.contains(name))
         throw new Error('the eventname "' + name + '" is not on of the defined eventnames: ' + definedEventNames.toString());
 
-    let offset = 0;
-    let c = [];
-    if (name in registeredEventHandler) {
-        for (let i = 0; i < registeredEventHandler[name].length - 1; i++) {
-            if (registeredEventHandler[name][i] == func)
-                offset = 1;
+    if (!(name in registeredEventHandler))
+        return false;
 
-            c[i] = registeredEventHandler[i - offset];
-        }
-        registeredEventHandler[name] = c;
-    }
+    const pos = registeredEventHandler[name].indexOf(func);
+    if (pos == -1)
+        return false;
 
-    return offset == 1;
+    registeredEventHandler[name].splice(pos, 1);
+
+    return true;
 }
 
 /**
@@ -96,16 +93,14 @@ function dispatchEvent(definedEventNames, registeredEventHandler, name, obj) {
 /**
  * This function transforms an Object into an {@link DomLikeObservable}.
  * 
- * This function is registert on Object as a static.
- * 
  * ```javascript
  * // SomeClass does not contains addEventListener etc.
  * let obj = new SomeClassA();
- * Object.makeDomLikeObservable(obj,['firstEvent','secondEvent']);
+ * makeDomLikeObservable(obj,['firstEvent','secondEvent']);
  * 
  * obj.addEventListener('firstEvent', () => console.log)
  * 
- * let newObj = Object.makeDomLikeObservable(,['another-event']);
+ * let newObj = makeDomLikeObservable(,['another-event']);
  * //....
  * ```
  * 
@@ -113,7 +108,7 @@ function dispatchEvent(definedEventNames, registeredEventHandler, name, obj) {
  * // usage: you are defining some class and want this class to be able to dispatch events and provide functionality so other functions can be registert as eventlistener on this class
  * 
  * function SomeClassB(){
- *  Object.makeEventListener(this, ['someEvent', 'someOtherEvent']);
+ *  makeDomLikeObservable(this, ['someEvent', 'someOtherEvent']);
  * 
  *  // ... other initlizing code
  * 
@@ -158,7 +153,7 @@ function makeDomLikeObservable(obj, definedEvents) {
     /**
      * Events contains the defined events, if non where defined the array is empty.
      * 
-     * The frozen (== immutable) array `Events` is meant to represent the available events,
+     * The frozen (== immutable) array `events` is meant to represent the available events,
      * which includes an runtime check on register, wether or not this event is defined
      * 
      * `events` has two special members 
