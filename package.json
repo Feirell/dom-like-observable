@@ -15,7 +15,7 @@
     "observer",
     "listener"
   ],
-  "author": "",
+  "author": "Florian Völker <florian-domenic-voelker@web.de>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Feirell/dom-like-observable/issues"
@@ -23,5 +23,8 @@
   "homepage": "https://github.com/Feirell/dom-like-observable#readme",
   "files": [
     "./make-observable.js"
-  ]
+  ],
+  "engines": {
+    "node": "*"
+  }
 }
