@@ -1,6 +1,6 @@
 {
   "name": "dom-like-observable",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A simple dom like observable creating utility.",
   "main": "make-observable.js",
   "scripts": {
